@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+    environment{
+        AWS_ACCESS_KEY_ID = credentials('')
+        AWS_SECRET_ACCESS_KEY = credentials('')
+    }
+
+    stages {
+        stage('init') {
+            steps {
+                echo "initializing..."
+                sh 'terraform init'
+                
+            }
+        }
+        stage('fmt and validate') {
+            steps {
+                echo "formatting..."
+                sh 'terraform fmt'
+
+                echo "validating..."
+                sh 'terraform validate'
+            }
+        }
+        stage('apply') {
+            steps {
+                
+                echo 'Deploying...'
+                sh 'terraform apply'
+            }
+        } 
+    }
+    post{
+        success {
+            echo 'This will run only if successful'
+        }
+        failure {
+            echo 'This will run only if failed'
+        }
+    }
+}
