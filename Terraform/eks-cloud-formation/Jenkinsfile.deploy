@@ -30,7 +30,7 @@ pipeline {
             steps {
                 echo 'applying configuration ...'
                 dir('Terraform/eks-cloud-formation') {
-                    sh 'terraform apply'
+                    sh 'terraform apply --auto-approve'
                 }
             }
         } 
