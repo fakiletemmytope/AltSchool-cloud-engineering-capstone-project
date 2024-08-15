@@ -8,26 +8,30 @@ pipeline {
 
     stages {
         stage('init') {
-            steps {
-                echo "initializing..."
-                sh 'terraform init'
-                
+            steps{
+                echo 'initializing ...'
+                dir('Terraform/eks-cloud-formation') {
+                    sh 'terraform init'
+                }
             }
         }
         stage('fmt and validate') {
             steps {
-                echo "formatting..."
-                sh 'terraform fmt'
+                echo 'formatting and validating ...'
+                dir('Terraform/eks-cloud-formation') {
+                    sh 'terraform fmt'
+                    sh 'terraform validate'
+                }
 
-                echo "validating..."
-                sh 'terraform validate'
+  
             }
         }
         stage('apply') {
             steps {
-                
-                echo 'Deploying...'
-                sh 'terraform apply'
+                echo 'applying configuration ...'
+                dir('Terraform/eks-cloud-formation') {
+                    sh 'terraform apply'
+                }
             }
         } 
     }
