@@ -15,6 +15,14 @@ pipeline {
                 }
             }
         }
+        stage('refresh') {
+            steps{
+                echo 'refreshing ...'
+                dir('Terraform/eks-cloud-formation') {
+                    sh 'terraform refresh'
+                }
+            }
+        }
         stage('fmt and validate') {
             steps {
                 echo 'formatting and validating ...'
