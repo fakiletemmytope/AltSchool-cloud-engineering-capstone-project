@@ -9,7 +9,7 @@ resource "aws_eks_node_group" "eks-nodegroup-capstone" {
     node_role_arn   = data.aws_iam_role.eks-node-group-role.arn
     subnet_ids      = split(",", aws_cloudformation_stack.eks_cloudformation_stack.outputs["SubnetIds"])
     scaling_config {
-        desired_size = 18
+        desired_size = 30
         max_size     = 30
         min_size     = 1
     }
