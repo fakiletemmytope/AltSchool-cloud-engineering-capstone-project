@@ -102,10 +102,10 @@ pipeline {
 
     post {
         success {
-            echo 'This will run only if successful'
+            echo 'Build Successful'
         }
         failure {
-            echo 'This will run only if failed'
+            echo 'Build failed'
         }
     }
 }
