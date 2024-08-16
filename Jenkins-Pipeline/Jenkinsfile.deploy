@@ -30,8 +30,6 @@ pipeline {
                     sh 'terraform fmt'
                     sh 'terraform validate'
                 }
-
-  
             }
         }
         stage('apply') {
@@ -104,4 +102,4 @@ pipeline {
             echo 'This will run only if failed'
         }
     }
-}ter
+}
