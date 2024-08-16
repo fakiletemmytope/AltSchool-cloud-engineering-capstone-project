@@ -49,7 +49,7 @@ pipeline {
         stage('deploy webapp') {
             steps {
                 script {
-                    def filePath = 'Deployment/Manifest'
+                    def filePath = 'Deployment/manifest'
                     if (fileExists(filePath)) {
                         echo "File exists"
                         sh "kubectl apply -f ${filePath}"
@@ -62,25 +62,25 @@ pipeline {
         stage('deploy Gravana') {
             steps {
                 script {
-                    def filePath = 'Deployment/Gravana'
+                    def filePath = 'Deployment/manifests-alerting'
                     if (fileExists(filePath)) {
                         echo "File exists"
                         sh "kubectl apply -f ${filePath}"
                     } else {
-                        echo "File does not exist. Skipping deployment of Gravana"
+                        echo "File does not exist. Skipping deployment of Gravana and Promethus"
                     }
                 }
             }
         }
-        stage('deploy Prometheus') {
+        stage('deploy Alertmanager') {
             steps {
                 script {
-                    def filePath = 'Deployment/Prometheus'
+                    def filePath = 'Deployment/manifests-monitoring'
                     if (fileExists(filePath)) {
                         echo "File exists"
                         sh "kubectl apply -f ${filePath}"
                     } else {
-                        echo "File does not exist. Skipping deployment of Prometheus"
+                        echo "File does not exist. Skipping deployment of AlertManager"
                     }
                 }
             }
