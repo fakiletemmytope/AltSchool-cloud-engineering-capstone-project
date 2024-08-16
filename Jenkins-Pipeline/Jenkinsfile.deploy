@@ -1,14 +1,14 @@
 pipeline {
     agent any
-    environment{
-         AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        region = 'us-east-1'
+        REGION = 'us-east-1'
     }
 
     stages {
         stage('init') {
-            steps{
+            steps {
                 echo 'initializing ...'
                 dir('Terraform/eks-cloud-formation') {
                     sh 'terraform init'
@@ -16,7 +16,7 @@ pipeline {
             }
         }
         stage('refresh') {
-            steps{
+            steps {
                 echo 'refreshing ...'
                 dir('Terraform/eks-cloud-formation') {
                     sh 'terraform refresh'
@@ -40,61 +40,67 @@ pipeline {
                 }
             }
         }
-        stage('configure kubectl'){
-            echo 'configurinh the kube-config file...'
-            
-            sh 'aws eks update-kubeconfig --name eks-cluster-for-capstone-project'  
+        stage('configure kubectl') {
+            steps {
+                echo 'configuring the kube-config file...'
+                sh 'aws eks update-kubeconfig --name eks-cluster-for-capstone-project'
+            }
         }
-        stage('deploy webapp'){
-            // Define the file path
-            def filePath = 'Deployment/Manifest'
-            if (fileExists(filePath)) {
-                    echo "File exists"
-                    sh 'kubectl apply -f Deployment/Manifest'
-                        
-                } 
-                else {
+        stage('deploy webapp') {
+            steps {
+                script {
+                    def filePath = 'Deployment/Manifest'
+                    if (fileExists(filePath)) {
+                        echo "File exists"
+                        sh "kubectl apply -f ${filePath}"
+                    } else {
                         echo "File does not exist. Skipping deployment of web-app"
+                    }
                 }
+            }
         }
-        stage('deploy Gravana'){
-            // Define the file path
-            def filePath = 'Deployment/Alertmanager'
-            if (fileExists(filePath)) {
-                    echo "File exists"
-                    sh 'kubectl apply -f Deployment/Gravana'
-                        
-                } 
-                else {
+        stage('deploy Gravana') {
+            steps {
+                script {
+                    def filePath = 'Deployment/Gravana'
+                    if (fileExists(filePath)) {
+                        echo "File exists"
+                        sh "kubectl apply -f ${filePath}"
+                    } else {
                         echo "File does not exist. Skipping deployment of Gravana"
+                    }
                 }
+            }
         }
-        stage('deploy Prometheus'){
-            // Define the file path
-            def filePath = 'Deployment/Alertmanager'
-            if (fileExists(filePath)) {
-                    echo "File exists"
-                    sh 'kubectl apply -f Deployment/Prometheus'
-                        
-                } 
-                else {
+        stage('deploy Prometheus') {
+            steps {
+                script {
+                    def filePath = 'Deployment/Prometheus'
+                    if (fileExists(filePath)) {
+                        echo "File exists"
+                        sh "kubectl apply -f ${filePath}"
+                    } else {
                         echo "File does not exist. Skipping deployment of Prometheus"
+                    }
                 }
+            }
         }
-        stage('deploy alertmanager'){
-            // Define the file path
-            def filePath = 'Deployment/Alertmanager'
-            if (fileExists(filePath)) {
-                    echo "File exists"
-                    sh 'kubectl apply -f Deployment/Alertmanaget'
-                        
-                } 
-                else {
-                        echo "File does not exist. Skipping Terraform steps."
+        stage('deploy alertmanager') {
+            steps {
+                script {
+                    def filePath = 'Deployment/Alertmanager'
+                    if (fileExists(filePath)) {
+                        echo "File exists"
+                        sh "kubectl apply -f ${filePath}"
+                    } else {
+                        echo "File does not exist. Skipping deployment of Alertmanager"
+                    }
                 }
+            }
         }
     }
-    post{
+
+    post {
         success {
             echo 'This will run only if successful'
         }
