@@ -49,7 +49,7 @@ pipeline {
         stage('deploy webapp') {
             steps {
                 script {
-                    def filePath = 'Deployment/manifest'
+                    def filePath = 'Deployment/manifests'
                     if (fileExists(filePath)) {
                         echo "File exists"
                         sh "kubectl apply -f ${filePath}"
