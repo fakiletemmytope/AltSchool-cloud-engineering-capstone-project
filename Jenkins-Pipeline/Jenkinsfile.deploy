@@ -15,14 +15,14 @@ pipeline {
                 }
             }
         }
-        // stage('refresh') {
-        //     steps {
-        //         echo 'refreshing ...'
-        //         dir('Terraform/eks-cloud-formation') {
-        //             sh 'terraform refresh'
-        //         }
-        //     }
-        // }
+        stage('refresh') {
+            steps {
+                echo 'refreshing ...'
+                dir('Terraform/eks-cloud-formation') {
+                    sh 'terraform refresh'
+                }
+            }
+        }
         stage('fmt and validate') {
             steps {
                 echo 'formatting and validating ...'
@@ -43,7 +43,7 @@ pipeline {
         stage('configure kubectl') {
             steps {
                 echo 'configuring the kube-config file...'
-                sh 'aws eks update-kubeconfig --name eks-cluster-for-capstone-project'
+                sh 'aws eks update-kubeconfig --region us-east-1 --name eks-cluster-for-capstone-project'
             }
         }
         stage('deploy webapp') {
