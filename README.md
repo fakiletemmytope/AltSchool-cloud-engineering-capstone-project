@@ -42,6 +42,7 @@ The cluster is created using an already existing policy on the aws account.
 With EKS and networking set up, it’s time to deploy our applications. Below are deployment specifications for our web app and monitoring services are orchestrated by jenkins as seen in the [Jenkinsfile](Jenkins-Pipeline/Jenkinsfile.deploy):
 
 1. sh 'aws eks update-kubeconfig --region us-east-1 --name eks-cluster-for-capstone-project' for configuring the kubeconfig file.
+
 2. "kubectl apply -f ${filePath}"
 where the filepath are: Deployment/manifests, Deployment/manifests-alerting and Deployment/manifests-monitoring for the deployment of the webapp, (prometheus and gravana) and alertmanager respectiely.
 
@@ -52,9 +53,10 @@ where the filepath are: Deployment/manifests, Deployment/manifests-alerting and 
 ![Gravana](images/Screenshot%202024-08-17%20025658.png)
 
 ## Architecture Design
-Below is an architecture diagram illustrating the ecosystem we've built. It showcases the EKS cluster, node groups, networking components, and CI/CD pipeline. (insert image)
+Below is an architecture diagram illustrating the ecosystem we've built. It showcases the EKS cluster, node groups and CI/CD pipeline. 
+![archi-design](images/Screenshot%202024-08-18%20004007.png)
 
 ## Conclusion
-In this article, we covered the step-by-step process of configuring an AWS EKS cluster with Terraform, deploying a web application and monitoring tools using kubectl, and setting up a Jenkins CI/CD pipeline. Leveraging these modern tools and practices enhances the reliability and scalability of your applications, paving the way for successful cloud deployment.
+This article covers the step-by-step process of configuring an AWS EKS cluster with Terraform, deploying a web application and monitoring tools using kubectl, and setting up a Jenkins CI/CD pipeline. Leveraging these modern tools and practices enhances the reliability and scalability of your applications, paving the way for successful cloud deployment.
 Feel free to modify the configurations according to your requirements and start deploying your applications today!
 
